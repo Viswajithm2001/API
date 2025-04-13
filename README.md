@@ -4,7 +4,7 @@
 This project is designed to help me learn ASP.NET Core by building a simple API. It demonstrates the use of controllers, dependency injection, routing, and other key features of ASP.NET Core.
 
 ## Prerequisites
-- [.NET 6 SDK](https://dotnet.microsoft.com/download)
+- [.NET 9 SDK](https://dotnet.microsoft.com/download)
 - Visual Studio / VS Code
 
 ## Setup
