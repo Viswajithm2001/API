@@ -1,6 +1,7 @@
 ﻿using MoviesAPI.Enitites;
 using MoviesAPI.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 namespace MoviesAPI.Controllers
 {
     [Route("api/genres")]
@@ -21,6 +22,10 @@ namespace MoviesAPI.Controllers
         [HttpGet("{id:int}")]
         public IActionResult Get(int id)
         {
+            if(!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             var genre = _repository.GetGenreById(id);
             if(genre == null)
             {
@@ -28,20 +33,34 @@ namespace MoviesAPI.Controllers
             }
             return Ok(genre);
         }
-        [HttpPost]
-        public void Post()
+        [HttpGet("details")]
+        public IActionResult Get(int id, [FromQuery]string param = null)
         {
-
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var genre = _repository.GetGenreById(id);
+            if (genre == null)
+            {
+                return NotFound();
+            }
+            return Ok(genre);
+        }
+        [HttpPost]
+        public ActionResult Post()
+        {
+            return NoContent();
         }
         [HttpPut]
-        public void Put()
+        public ActionResult Put()
         {
-
+            return NoContent();
         }
         [HttpDelete]
-        public void Delete()
+        public ActionResult Delete()
         {
-             
+             return NoContent();
         }
     }
 }
