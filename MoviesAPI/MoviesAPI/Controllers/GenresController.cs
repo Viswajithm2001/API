@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 namespace MoviesAPI.Controllers
 {
     [Route("api/genres")]
+    //[ApiController]
     public class GenresController : ControllerBase
     {
         private readonly IRepository _repository;
@@ -20,13 +21,9 @@ namespace MoviesAPI.Controllers
             return await _repository.GetAllGenres();//async method return await
         }
         [HttpGet("{id:int}")]
-        public IActionResult Get(int id)
+        public async Task<IActionResult> Get(int id)
         {
-            if(!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-            var genre = _repository.GetGenreById(id);
+            var genre = await _repository.GetGenreById(id);
             if(genre == null)
             {
 
@@ -48,9 +45,28 @@ namespace MoviesAPI.Controllers
             return Ok(genre);
         }
         [HttpPost]
-        public ActionResult Post()
+        public ActionResult Post([FromBody]Genre genre)
         {
-            return NoContent();
+            if(genre == null)
+            {
+                return BadRequest("Genre cannot be null.");
+            }
+            else
+            {
+                if(!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+                if (_repository.HasGenre(genre))
+                {
+                    return BadRequest($"A genre with Id {genre.Id} already exists.");
+                }
+                else
+                {
+                    _repository.AddGenre(genre);
+                    return Ok();
+                }
+            }
         }
         [HttpPut]
         public ActionResult Put()
