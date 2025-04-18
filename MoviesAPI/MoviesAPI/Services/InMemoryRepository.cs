@@ -25,6 +25,21 @@ namespace MoviesAPI.Services
             var genre = _genres.FirstOrDefault(x => x.Id == id);
             return genre;
         }
+        public Genre GetGenreById_forGetting(int id)
+        {
+            var genre = _genres.FirstOrDefault(x => x.Id == id);
+            return genre;
+        }
+        public bool DeleteGenre(int id)
+        {
+            var genre = _genres.FirstOrDefault(x => x.Id == id);
+            if (genre != null)
+            {
+                _genres.Remove(genre);
+                return true;
+            }
+            return false;
+        }
         public List<Genre> AddGenre(Genre genre)
         {
             if(genre == null)
