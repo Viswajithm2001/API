@@ -13,8 +13,9 @@ namespace MoviesAPI.Services
                 new Genre(){Id = 2,Name = "Action"},
             };
         }
-        public List<Genre> GetAllGenres()
+        public async Task<List<Genre>> GetAllGenres()
         {
+            await Task.Delay(3000); 
             return _genre;
         }
         public Genre GetGenreById(int id)

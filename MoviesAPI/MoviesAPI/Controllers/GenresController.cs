@@ -14,9 +14,9 @@ namespace MoviesAPI.Controllers
         [HttpGet]
         [HttpGet("list")]
         [HttpGet("/allgenres")]
-        public ActionResult<List<Genre>> Get() //same as IActionresult but the return type
+        public async Task<ActionResult<List<Genre>>> Get() //same as IActionresult but the return type
         {
-            return _repository.GetAllGenres();
+            return await _repository.GetAllGenres();//async method return await
         }
         [HttpGet("{id:int}")]
         public IActionResult Get(int id)
