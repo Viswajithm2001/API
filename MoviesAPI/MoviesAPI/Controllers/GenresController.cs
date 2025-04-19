@@ -2,6 +2,7 @@
 using MoviesAPI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using MoviesAPI.Filters;
 namespace MoviesAPI.Controllers
 {
     [Route("api/genres")]
@@ -18,6 +19,7 @@ namespace MoviesAPI.Controllers
         [HttpGet]
         [HttpGet("list")]
         [HttpGet("/allgenres")]
+        [ServiceFilter(typeof(MyActionFilter))]
         public async Task<ActionResult<List<Genre>>> Get() //same as IActionresult but the return type
         {
             _logger.LogInformation("Getting all genres");

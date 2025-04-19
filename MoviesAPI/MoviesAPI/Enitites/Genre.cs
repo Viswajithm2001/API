@@ -7,6 +7,7 @@ namespace MoviesAPI.Enitites
         public int Id { get; set; }
         
         public string Name { get; set; }
+
         [FirstLetterUpperCase]
         public string MovieName { get; set; }
     }
