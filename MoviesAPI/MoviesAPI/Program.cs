@@ -1,6 +1,8 @@
 using MoviesAPI.Services;
 using MoviesAPI.Filters;
 using Microsoft.AspNetCore.Builder;
+using MoviesAPI;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +17,11 @@ builder.Services.AddTransient<MyActionFilter>();
 builder.Services.AddTransient<IHostedService,WriteToFileHosterServices>();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
+
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+{
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+});
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();

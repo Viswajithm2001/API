@@ -1,9 +1,11 @@
-﻿using MoviesAPI.Validations;
+﻿using System.ComponentModel.DataAnnotations;
+using MoviesAPI.Validations;
 
 namespace MoviesAPI.Enitites
 {
     public class Genre
     {
+        [Key]
         public int Id { get; set; }
         
         public string Name { get; set; }
