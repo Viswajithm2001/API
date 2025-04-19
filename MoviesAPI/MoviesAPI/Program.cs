@@ -12,6 +12,7 @@ builder.Services.AddControllers(options =>
 }).AddXmlSerializerFormatters();
 builder.Services.AddSingleton<IRepository,InMemoryRepository>();
 builder.Services.AddTransient<MyActionFilter>();
+builder.Services.AddTransient<IHostedService,WriteToFileHosterServices>();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
