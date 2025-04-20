@@ -26,6 +26,7 @@ namespace MoviesAPI.Controllers
             return await context.Genres.ToListAsync();//async method return await
         }
         [HttpGet("{id:int}")]
+        //[HttpGet("{id:int}",Name = "Get")]
         public async Task<IActionResult> Get(int id)
         {
             var genre = await context.Genres.FirstOrDefaultAsync(x=> x.Id==id);
@@ -36,18 +37,35 @@ namespace MoviesAPI.Controllers
             return Ok(genre);
         }
         [HttpPost]
-        public async Task<ActionResult> Post([FromBody]Genre genre)
+        public async Task<ActionResult> Post([FromForm] GenreCreationDTO genreDTO)
         {
-            if (genre == null)
+            var genre = new Genre
             {
-                return BadRequest("Genre cannot be null.");
-            }
-            else
+                Name = genreDTO.Name,
+                MovieName = genreDTO.MovieName
+            };
+
+            if (genreDTO.Poster != null)
             {
-                context.Add(genre);
-                await context.SaveChangesAsync();
-                return Ok(genre);
+                var postersFolder = Path.Combine("wwwroot", "posters");
+                var fileName = $"{Guid.NewGuid()}_{genreDTO.Poster.FileName}";
+                var fullPath = Path.Combine(Directory.GetCurrentDirectory(), postersFolder, fileName);
+
+                Directory.CreateDirectory(Path.GetDirectoryName(fullPath)!);
+
+                using (var stream = new FileStream(fullPath, FileMode.Create))
+                {
+                    await genreDTO.Poster.CopyToAsync(stream);
+                }
+
+                genre.PosterPath = Path.Combine("posters", fileName).Replace("\\", "/");
             }
+
+            context.Add(genre);
+            await context.SaveChangesAsync();
+
+            return Ok(genre);
+            //return CreatedAtAction("Get", new { id = genre.Id }, genre);
         }
         [HttpPut("{id:int}")]
         public async Task<ActionResult> Put(int id, Genre updatedGenre)
@@ -60,6 +78,7 @@ namespace MoviesAPI.Controllers
 
             existingGenre.Name = updatedGenre.Name;
             existingGenre.MovieName = updatedGenre.MovieName;
+            existingGenre.PosterPath = updatedGenre.PosterPath;
             await context.SaveChangesAsync();
             return Ok(existingGenre);
         }

@@ -3,6 +3,7 @@ using MoviesAPI.Filters;
 using Microsoft.AspNetCore.Builder;
 using MoviesAPI;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.FileProviders;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -36,6 +37,13 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+
+app.UseStaticFiles();
+//app.UseStaticFiles(new StaticFileOptions
+//{
+//    FileProvider = new PhysicalFileProvider(@"D:\API\API\MoviesAPI\MoviesAPI\wwwroot\posters"),
+//    RequestPath = "/posters"
+//});
 
 app.MapControllers();
 
