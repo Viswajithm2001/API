@@ -46,32 +46,34 @@ namespace MoviesAPI.Controllers
             {
                 context.Add(genre);
                 await context.SaveChangesAsync();
-                return new CreatedAtRouteResult("getGenre",new { Id = genre.Id }, genre);
+                return Ok(genre);
             }
         }
-        //[HttpPut("{id:int}")]
-        //public ActionResult Put(int id, Genre updatedGenre)
-        //{
-        //    var existingGenre = null;//_repository.GetGenreById_forGetting(id);
-        //    if (existingGenre == null)
-        //    {
-        //        return NotFound();
-        //    }
+        [HttpPut("{id:int}")]
+        public async Task<ActionResult> Put(int id, Genre updatedGenre)
+        {
+            var existingGenre = await context.Genres.FirstOrDefaultAsync(x => x.Id == id);
+            if (existingGenre == null)
+            {
+                return NotFound();
+            }
 
-        //    existingGenre.Name = updatedGenre.Name;
-        //    existingGenre.MovieName = updatedGenre.MovieName;
-        //    return Ok(existingGenre);
-        //}
-        //[HttpDelete("{id}")]
-        //public async Task<ActionResult> Delete(int id)
-        //{
-        //    var existingGenre = await _repository.GetGenreById(id);
-        //    if(existingGenre == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    _repository.DeleteGenre(id);
-        //    return Ok(existingGenre);
-        //}
+            existingGenre.Name = updatedGenre.Name;
+            existingGenre.MovieName = updatedGenre.MovieName;
+            await context.SaveChangesAsync();
+            return Ok(existingGenre);
+        }
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> Delete(int id)
+        {
+            var existingGenre = await context.Genres.FirstOrDefaultAsync(x => x.Id == id);
+            if (existingGenre == null)
+            {
+                return NotFound();
+            }
+            context.Genres.Remove(existingGenre);
+            await context.SaveChangesAsync();
+            return NoContent();
+        }
     }
 }

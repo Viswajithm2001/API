@@ -9,9 +9,9 @@ namespace MoviesAPI.Services
         {
             _genres = new List<Genre>()
             {
-                new Genre(){Id = 1,Name = "Comedy", MovieName = "Super bad"},
-                new Genre(){Id = 2,Name = "Action" , MovieName = "Mad Max"},
-                new Genre(){Id = 3,Name = "Thriller", MovieName = "conjuring"},
+                new Genre(){Name = "Comedy", MovieName = "Super bad"},
+                new Genre(){Name = "Action" , MovieName = "Mad Max"},
+                new Genre(){Name = "Thriller", MovieName = "conjuring"},
             };
         }
         public async Task<List<Genre>> GetAllGenres()
